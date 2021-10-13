@@ -7,14 +7,15 @@
 ・BD空間の可視化機能
 ・ログ機能
 objectives = -np.sum(np.square(solutions), axis=1)で評価
+
 """
 
-def compute():
+def compute(genotype_dim, evaluate, iteration, bounds, n_dim=2, pool_num=-1, batch_size=1):
     """
-    アーカイブAの初期化 {"0_0": [fitness, solution] or Cell}
+    アーカイブAの初期化 {"0_0": [fitness, solution, bd] or Cell}
     for iteration
         if len(archive) <= 初期個体数:
-            np.random.uniformで個体を初期化
+            np.random.uniformでbatch_sizeの個体を初期化
         else:
             アーカイブから親をランダムに選択    
             rand1 = np.random.randint(len(keys), size=params['batch_size'])
@@ -28,8 +29,9 @@ def compute():
                 子に追加
             F=[fitness...], BD=[bd...] <- evaluate(X) # evaluateは引数で関数として受け取って並列化する
             for f, bd, X in zip(F, BD, X):
-                if A[bd] = 空 or A[bd].fitness < f:
-                    A[bd] = [f, X]
+                index = grid(bd, bounds)
+                if A[index] = 空 or A[index].fitness < f:
+                    A[index] = [f, X, bd]
                     
     return A
     """
